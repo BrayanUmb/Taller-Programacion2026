@@ -17,10 +17,12 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-    - name: Build Project
+    - name: Build with Maven
       run: |
-        if [ -f "pom.xml" ]; then
-          mvn -B package -DskipTests --file pom.xml
+        if [ ! -f "pom.xml" ]; then
+          mvn archetype:generate -DgroupId=com.mycompany.app -DartifactId=my-app -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.4 -DinteractiveMode=false
+          cd my-app
+          mvn package
         else
-          find . -name "pom.xml" -exec mvn -B package -DskipTests --file {} \;
+          mvn -B package -DskipTests
         fi
