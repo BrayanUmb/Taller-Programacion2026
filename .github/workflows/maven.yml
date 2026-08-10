@@ -17,6 +17,10 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: maven
-    - name: Build with Maven
-      run: mvn -B package -DskipTests --file pom.xml
+    - name: Build Project
+      run: |
+        if [ -f "pom.xml" ]; then
+          mvn -B package -DskipTests --file pom.xml
+        else
+          find . -name "pom.xml" -exec mvn -B package -DskipTests --file {} \;
+        fi
